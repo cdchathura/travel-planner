@@ -4,7 +4,7 @@ import com.chathura.planner.travelplanner.client.WeatherAPIClient;
 import com.chathura.planner.travelplanner.exception.NotFoundException;
 import com.chathura.planner.travelplanner.model.WeatherList;
 import com.chathura.planner.travelplanner.model.response.WeatherDetails;
-import com.google.gson.Gson;
+import com.google.gson.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +29,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WeatherControllerTest {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .serializeNulls()
+            .registerTypeAdapter(LocalDateTime.class,
+                    (JsonSerializer<LocalDateTime>) (localDate, type, context)
+                            -> new JsonPrimitive(localDate.format(DateTimeFormatter.ISO_DATE_TIME)))
+            .registerTypeAdapter(LocalDateTime.class,
+                    (JsonDeserializer<LocalDateTime>) (jsonElement, type, context)
+                            -> LocalDateTime.parse(jsonElement.getAsString(), DateTimeFormatter.ISO_DATE_TIME))
+            .create();
+    ;
     @Value("classpath:sample_list_response.json")
     Resource sampleFile;
     @LocalServerPort
@@ -42,8 +53,10 @@ class WeatherControllerTest {
         String resp = Files.readString(sampleFile.getFile().toPath());
         WeatherDetails weatherDetails = gson.fromJson(resp, WeatherDetails.class);
         Mockito.when(weatherAPIClient.doGet(anyString(), any(List.class))).thenReturn(weatherDetails);
-        WeatherList weatherList = this.restTemplate.getForObject("http://localhost:" + port + "/weather?city=US",
-                WeatherList.class);
+        ResponseEntity<String> weatherListResponseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/weather?city=US",
+                String.class);
+        System.out.printf("ss   s " + weatherListResponseEntity.getBody());
+        WeatherList weatherList = gson.fromJson(weatherListResponseEntity.getBody(), WeatherList.class);
         assertNotNull(weatherList);
         assertEquals("US", weatherList.getCountryCode());
         assertEquals("Memphis", weatherList.getCityName());

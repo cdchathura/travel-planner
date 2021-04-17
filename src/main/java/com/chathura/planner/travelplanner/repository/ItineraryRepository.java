@@ -1,7 +1,10 @@
 package com.chathura.planner.travelplanner.repository;
 
-import org.springframework.stereotype.Repository;
+import com.chathura.planner.travelplanner.entity.Itinerary;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class ItineraryRepository {
+import java.util.Optional;
+
+public interface ItineraryRepository extends JpaRepository<Itinerary, Integer> {
+     Optional<Itinerary> findByName(String name);
 }
