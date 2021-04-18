@@ -28,3 +28,6 @@
   (src/main/resources/city_list.json)
 
   ![clity_list](./src/doc/city.png)
+
+### _Verify the installation_
+- [Swagger UI link](http://localhost:8080/swagger-ui/#) 
