@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class ItineraryMapping implements Serializable {
+    private static final long serialVersionUID = 5050177604492679221L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,6 +25,7 @@ public class ItineraryMapping implements Serializable {
     private Itinerary itinerary;
 
     @Column(nullable = false)
+    @NotNull(message = "Date cannot be null")
     private LocalDate date;
 
 }
