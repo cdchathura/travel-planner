@@ -7,7 +7,7 @@
 - clone the source code or download
 - go to the downloaded folder
 - run ./mvnw spring-boot:run
-
+- built using JDK 11
 
 ### _Cache configuration_
 - Get weather API calls are cashed using ehcache and spring cache (src/main/resources/ehcache.xml).
