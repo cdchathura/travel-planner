@@ -6,19 +6,17 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Entity
+@Entity(name = "city")
 @Data
 public class City implements Serializable {
     private static final long serialVersionUID = 325405287260623987L;
-    @ManyToMany
-    @JoinTable(
-            name = "city_itinerary",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "city_id"))
-    Set<Itinerary> itineraries;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String country;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cities")
+    private Set<Itinerary> itineraries;
 }

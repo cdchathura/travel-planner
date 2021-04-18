@@ -30,6 +30,10 @@ public class CityServiceImpl implements CityService {
     private final CityMapper cityMapper;
     private final Gson gson =  new Gson();
 
+    /**
+     * this is just to demo the project
+     * @throws IOException
+     */
     @PostConstruct
     public void initCities() throws IOException {
         try (

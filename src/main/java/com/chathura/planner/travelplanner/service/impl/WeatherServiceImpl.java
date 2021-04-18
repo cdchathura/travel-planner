@@ -7,6 +7,7 @@ import com.chathura.planner.travelplanner.model.response.WeatherDetails;
 import com.chathura.planner.travelplanner.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +27,9 @@ public class WeatherServiceImpl implements WeatherService {
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Cacheable(
+            value = "weatherCache",
+            key = "#city")
     public WeatherList getWeatherDetailsByCity(String city) {
         List<Object> parameters = new ArrayList<>(2);
         parameters.add(city);

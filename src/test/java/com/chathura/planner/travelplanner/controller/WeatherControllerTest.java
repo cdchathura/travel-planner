@@ -38,7 +38,7 @@ class WeatherControllerTest {
                     (JsonDeserializer<LocalDateTime>) (jsonElement, type, context)
                             -> LocalDateTime.parse(jsonElement.getAsString(), DateTimeFormatter.ISO_DATE_TIME))
             .create();
-    ;
+
     @Value("classpath:sample_list_response.json")
     Resource sampleFile;
     @LocalServerPort
@@ -55,7 +55,6 @@ class WeatherControllerTest {
         Mockito.when(weatherAPIClient.doGet(anyString(), any(List.class))).thenReturn(weatherDetails);
         ResponseEntity<String> weatherListResponseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/weather?city=US",
                 String.class);
-        System.out.printf("ss   s " + weatherListResponseEntity.getBody());
         WeatherList weatherList = gson.fromJson(weatherListResponseEntity.getBody(), WeatherList.class);
         assertNotNull(weatherList);
         assertEquals("US", weatherList.getCountryCode());
