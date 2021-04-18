@@ -8,5 +8,5 @@ import java.io.Serializable;
 public class CityDateEntry implements Serializable {
     private static final long serialVersionUID = 3488840273044731581L;
     private String name;
-    private String timestamp;
+    private String date;
 }

@@ -24,14 +24,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class CityServiceImpl implements CityService {
-    @Value("classpath:city_list.json")
-    private Resource allCities;
     private final CityRepository cityRepository;
     private final CityMapper cityMapper;
-    private final Gson gson =  new Gson();
+    private final Gson gson = new Gson();
+    @Value("classpath:city_list.json")
+    private Resource allCities;
 
     /**
      * this is just to demo the project
+     *
      * @throws IOException
      */
     @PostConstruct
@@ -52,7 +53,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<com.chathura.planner.travelplanner.model.City> getAllCities(){
+    public List<com.chathura.planner.travelplanner.model.City> getAllCities() {
         return cityRepository.findAll().stream().map(cityMapper::entityToApi).collect(Collectors.toList());
     }
 }

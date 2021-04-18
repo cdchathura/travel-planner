@@ -19,6 +19,7 @@ import java.util.List;
 @CrossOrigin
 public class CityController {
     private final CityService cityService;
+
     @GetMapping("/city")
     public HttpEntity<List<City>> getAll() {
         return new ResponseEntity<>(cityService.getAllCities(), HttpStatus.OK);
